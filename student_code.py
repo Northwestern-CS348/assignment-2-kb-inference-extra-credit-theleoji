@@ -142,6 +142,38 @@ class KnowledgeBase(object):
         """
         ####################################################
         # Student code goes here
+        return kb_explain_recurse(fact_or_rule, 0)
+
+
+    def kb_explain_recurse(self, fact_or_rule, level):
+        return_string = ""
+        for i in range(0, level):
+            return_string += "  "
+
+        if isinstance(fact_or_rule, Fact):
+            return_string += "fact: "
+            return_string += str(fact_or_rule)
+            return_string += " "
+
+            if fact_or_rule.asserted:
+                return_string += "ASSERTED \n"
+            elif len(fact_or_rule.supported_by) != 0:
+                return_string +"\n  SUPPORTED BY\n"
+                for supported_item in supported_by:
+                    return_string += kb_explain_recurse(supported_item, level + 2)
+
+        elif isinstance(fact_or_rule, Rule):
+            return_string += "rule: "
+            return_string += str(fact_or_rule)
+            return_string += " "
+
+            if fact_or_rule.asserted:
+                return_string += "ASSERTED \n"
+            elif len(fact_or_rule.supported_by) != 0:
+                return_string +"\n  SUPPORTED BY\n"
+                for supported_item in supported_by:
+                    return_string += kb_explain_recurse(supported_item, level + 2)
+        else:
 
 
 class InferenceEngine(object):
